@@ -211,7 +211,7 @@ if st.session_state.extracted_text:
                         """)
         
         with col4:
-            st.subheader("Applicant's Fit with the Selected Job Role")
+            st.write("Applicant's Fit with the Selected Job Role")
             gauge(
                 float(extracted_dict["Match Score"]),
                 gTitle="Job Match Score",
