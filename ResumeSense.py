@@ -11,7 +11,11 @@ openAIClient = OpenAI(
 )
 
 tech_jobs = {
-     "Data Scientist": {
+      "Machine Learning Engineer": {
+        "Description": "Designs and develops machine learning systems and algorithms. Works on data preprocessing, model training, and deployment to solve real-world problems.",
+        "Skills": ["Python", "Machine Learning", "Deep Learning", "Data Preprocessing", "Model Deployment (TensorFlow, PyTorch)"],
+    },
+    "Data Scientist": {
         "Description": "Analyzes and interprets complex data to provide actionable insights. Builds machine learning models and data pipelines to solve business problems.",
         "Skills": ["Python/R", "Machine Learning", "Data Analysis", "SQL", "Visualization (Tableau, Matplotlib)"],
     },
@@ -19,7 +23,6 @@ tech_jobs = {
         "Description": "Designs, develops, tests, and maintains software applications. Collaborates with cross-functional teams to deliver high-quality, scalable solutions.",
         "Skills": ["Programming (Python, Java, C++)", "Problem-solving", "Version control (Git)", "Debugging"],
     },
-   
     "Cloud Engineer": {
         "Description": "Designs, implements, and manages cloud infrastructure to ensure high availability, scalability, and security of applications and data.",
         "Skills": ["AWS/Azure/GCP", "Networking", "DevOps tools (Docker, Kubernetes)", "Infrastructure as Code (Terraform)"],
@@ -31,7 +34,8 @@ tech_jobs = {
     "Product Manager": {
         "Description": "Leads product development by defining requirements, prioritizing features, and collaborating with engineering and design teams to deliver value to users.",
         "Skills": ["Project Management", "Communication", "Market Research", "Agile Methodologies", "Roadmap Planning"],
-    },
+    }
+  
 }
 
 
@@ -46,30 +50,32 @@ def extract_text_from_pdf(pdf_file):
     return text
 
 # Resume Parser function
-def resumeParser(resume_content, selected_job):
+def resumeParser(resume_content, describtion, skills):
     messages = [
         {
             "role": "system",
-            "content": """You're a resume parser bot. You're to extract key information like
-            email, phone number, skills, LinkedIn URL from the resume content given to you.
-            Also given the company's job title, descriptions and skills requuired, you are to compare it with the user's resume and return a match score of the
-            user's strength to the job. make sure the score really correlates with the user's strength to the job. If the user's resume is about cyber  security 
-            and the job role is data science, the score should be low, like 0.40.
-            Output your answer in dictionary format like this:
-            {
-                "Name": "User's name from resume",
-                "Professional Summary": "Summary from resume",
-                "Experience": ["Data Science Instructor at XYC company, Machine Learning intern at XYC Company],
-                "Skills: ["Python", "SQL"],
-                "Linkedin Url": "user's linkedin url",
-                "Email": "User's email",
-                "Match Score": "Return the score here indicating how fit the user is to the role. E.g 0.80"
-            }
-            """
+            "content": (
+                "You're a resume parser bot. Extract key information like email, phone number, skills, "
+                "LinkedIn URL from the resume content given to you. Also, given the company's job title, "
+                "descriptions, and skills required, compare it with the user's resume and return a match score "
+                "of the user's strength to the job. Ensure the score correlates with the user's strength to the job. "
+                "If the user's resume is about cybersecurity and the job role is data science, the score should be low, like 0.40. "
+                "Output your answer in dictionary format like this:\n"
+                "{\n"
+                '    "Name": "User\'s name from resume",\n'
+                '    "Professional Summary": "Summary from resume",\n'
+                '    "Experience": ["Data Science Instructor at XYZ company", "Machine Learning intern at XYZ Company"],\n'
+                '    "Skills": ["Python", "SQL"],\n'
+                '    "Linkedin Url": "user\'s linkedin url",\n'
+                '    "Email": "User\'s email",\n'
+                '    "Match Score": "Return the score here indicating how fit the user is to the role. E.g 0.80"\n'
+                "}\n"
+                f"Job Description: {describtion}, Skills: {skills}"
+            )
         },
         {
             "role": "user",
-            "content": f" User's resume:{resume_content}, Posted Job Details : {selected_job}"
+            "content": f"User's resume: {resume_content}"
         }
     ]
 
@@ -179,7 +185,9 @@ if uploaded_file is not None and parse_button:
     resume_texts = extract_text_from_pdf(pdf_file)
     st.session_state.extracted_resume_text = resume_texts
     with st.spinner('Parsing resume...'):
-        extracted_text = resumeParser(resume_texts, tech_jobs[job_role])
+        job_description = tech_jobs[job_role]["Description"]
+        job_skills = tech_jobs[job_role]["Skills"]
+        extracted_text = resumeParser(resume_texts, job_description, job_skills)
         st.session_state.extracted_text = extracted_text
             
     
