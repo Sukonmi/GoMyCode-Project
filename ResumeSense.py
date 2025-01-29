@@ -176,6 +176,7 @@ if "extracted_resume_text" not in st.session_state:
 if uploaded_file is not None and parse_button:
     pdf_file = io.BytesIO(uploaded_file.read())
     resume_texts = extract_text_from_pdf(pdf_file)
+    st.session_state.extracted_resume_text = resume_texts
     with st.spinner('Parsing resume...'):
         extracted_text = resumeParser(resume_texts, tech_jobs[job_role])
         st.session_state.extracted_text = extracted_text
