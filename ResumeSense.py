@@ -169,6 +169,8 @@ if "chat_history" not in st.session_state:
 if "extracted_text" not in st.session_state:
     st.session_state.extracted_text = None
 
+if "extracted_resume_text" not in st.session_state:
+    st.session_state.extracted_resume_text = None
 
 
 if uploaded_file is not None and parse_button:
@@ -250,7 +252,7 @@ if prompt := st.chat_input("Have specific questions about the user's resume?"):
              # Add system instructions to maintain context
             st.session_state.chat_history.insert(0, {
                 "role": "system",
-                "content": f"You are an HR assistant bot. Answer questions based on the parsed resume data provided here {st.session_state.extracted_text}."
+                "content": f"You are an HR assistant bot. Answer questions based on the parsed resume data provided here {st.session_state.extracted_resume_text}."
                 })
 
              
