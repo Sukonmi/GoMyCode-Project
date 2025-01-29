@@ -52,8 +52,9 @@ def resumeParser(resume_content, selected_job):
             "role": "system",
             "content": """You're a resume parser bot. You're to extract key information like
             email, phone number, skills, LinkedIn URL from the resume content given to you.
-            Also given the job title, descriptions and skills, you are to compare it with the user's resume and return a match score of the
-            user's strength to the job.
+            Also given the company's job title, descriptions and skills requuired, you are to compare it with the user's resume and return a match score of the
+            user's strength to the job. make sure the score really correlates with the user's strength to the job. If the user's resume is about cyber  security 
+            and the job role is data science, the score should be low, like 0.40.
             Output your answer in dictionary format like this:
             {
                 "Name": "User's name from resume",
@@ -68,7 +69,7 @@ def resumeParser(resume_content, selected_job):
         },
         {
             "role": "user",
-            "content": f" User's resume:{resume_content}, Job: {selected_job}"
+            "content": f" User's resume:{resume_content}, Posted Job Details : {selected_job}"
         }
     ]
 
