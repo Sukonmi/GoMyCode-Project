@@ -60,7 +60,7 @@ def resumeParser(resume_content, selected_job):
                 "Professional Summary": "Summary from resume",
                 "Experience": ["Data Science Instructor at XYC company, Machine Learning intern at XYC Company],
                 "Skills: ["Python", "SQL"],
-                "Linkedin URl": "user's linkedin url",
+                "Linkedin Url": "user's linkedin url",
                 "Email": "User's email",
                 "Match Score": "Return the score here indicating how fit the user is to the role. E.g 0.80"
             }
@@ -196,16 +196,16 @@ if st.session_state.extracted_text:
             st.subheader(" User Information")
             "---"
             st.markdown(f"""
-                        **:orange[Applicant Name]:** {extracted_dict['Name']}\n
-                        **:orange[Professional Summary]:** {extracted_dict["Professional Summary"]}\n
+                        **:orange[Applicant Name]:** {extracted_dict.get('Name', 'N/A')}\n
+                        **:orange[Professional Summary]:** {extracted_dict.get("Professional Summary", 'N/A')}\n
                         **:orange[Experience]:**
                         """)
-            for experience in extracted_dict["Experience"]:
+            for experience in extracted_dict.get("Experience", []):
                 st.markdown(f"- {experience}")
             st.markdown(f"""
-                        **:orange[Skills]**: {", ".join(extracted_dict["Skills"])}\n
-                        **:orange[Email]:** {extracted_dict['Email']}\n
-                        **:orange[LinkedIn URL]:** {extracted_dict["Linkedin URl"]}\n
+                        **:orange[Skills]**: {", ".join(extracted_dict.get("Skills", []))}\n
+                        **:orange[Email]:** {extracted_dict.get('Email', 'N/A')}\n
+                        **:orange[LinkedIn URL]:** {extracted_dict.get("Linkedin Url", 'N/A')}\n
                         """)
         
         with col4:
