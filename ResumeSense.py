@@ -7,7 +7,7 @@ from PIL import Image
 
 # OpenAI client setup
 openAIClient = OpenAI(
-    api_key="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"
+    api_key=st.secrets["API_KEY"]
 )
 
 tech_jobs = {
